@@ -6,19 +6,24 @@ import { Fieldset } from 'primereact/fieldset';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button'
 
+interface Classroom {
+  name: string;
+  age: number;
+  guardian: string;
+  phone: string;
+}
+
 function App() {
-  const [classrooms, setClassrooms] = useState([]);
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
 
-  // Estado que guarda o índice do aluno com Dialog aberto, ou null se nenhum aberto
-  const [dialogVisibleIndex, setDialogVisibleIndex] = useState(null);
+  const [dialogVisibleIndex, setDialogVisibleIndex] = useState<number | null>(null);
 
-  function classroomAdd(newClassroom) {
+  function classroomAdd(newClassroom: Classroom) {
     setClassrooms([...classrooms, newClassroom]);
   }
 
-  function classroomDelete(index) {
+  function classroomDelete(index: number) {
     setClassrooms(classrooms.filter((_, i) => i !== index));
-    // Fechar diálogo se o aluno deletado estiver aberto
     if (dialogVisibleIndex === index) {
       setDialogVisibleIndex(null);
     }
@@ -32,7 +37,7 @@ function App() {
       <Fieldset legend="Alunos Cadastrados">
         {classrooms.length === 0 && <p>Nenhum aluno cadastrado ainda.</p>}
         <ul className='flex flex-col gap-[4em]'>
-          {classrooms.map((classroom, index) => (
+          {classrooms.map((classroom: Classroom, index: number) => (
             <li key={index} className='flex flex-row gap-[2em] items-center'>
               {classroom.name} - {classroom.age} anos - Responsável: {classroom.guardian}
 
@@ -45,14 +50,14 @@ function App() {
               <Dialog
                 header={`Detalhes de ${classroom.name}`}
                 visible={dialogVisibleIndex === index}
-                style={{ width: '50vw' }}
+                className="w-[50vw]"
                 onHide={() => setDialogVisibleIndex(null)}
               >
                 <p className="m-0">
                   Nome: {classroom.name} <br />
                   Idade: {classroom.age} anos <br />
                   Responsável: {classroom.guardian} <br />
-                  Telefone: {classroom.phone || 'Não informado'} <br />
+                  Telefone: {classroom.phone} <br />
                 </p>
               </Dialog>
             </li>
