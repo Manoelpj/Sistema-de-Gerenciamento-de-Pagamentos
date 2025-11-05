@@ -32,7 +32,9 @@ export default function FormRegisterClassroom({ onAdd }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-8">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 
+    mb-[150px]
+    w-[200px] h-[200px]">
       <input
         type="text"
         name="name"

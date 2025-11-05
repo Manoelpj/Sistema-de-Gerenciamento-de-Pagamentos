@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { Fieldset } from 'primereact/fieldset'
 import TitleGeneric from './components/TitleGeneric'
@@ -17,12 +17,12 @@ function App() {
   const [classrooms, setClassrooms] = useState<Classroom[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
-  // Incluir nova turma
+
   function classroomAdd(newClassroom: Classroom) {
     setClassrooms([...classrooms, newClassroom])
   }
 
-  // Atualizar turma existente
+
   function classroomUpdate(index: number, updated: Classroom) {
     const updatedList = classrooms.map((c, i) =>
       i === index ? updated : c
@@ -31,24 +31,31 @@ function App() {
     setSelectedIndex(null)
   }
 
+  useEffect(() => {
+    setClassrooms([
+      { name: 'João', age: 10, guardian: 'Maria', phone: '123456789', active: true },
+      { name: 'Pedro', age: 12, guardian: 'Ana', phone: '987654321', active: true },
+      { name: 'Paulo', age: 14, guardian: 'Carlos', phone: '456789123', active: true },
+    ])
+  }, [])
+
   return (
     <>
-      <TitleGeneric title="Cadastro de Aluno" />
+      <div className='ml-[10px]'>
 
-      {/* Formulário para incluir ou alterar */}
-      <FormRegisterClassroom
-        onAdd={classroomAdd}
-        onUpdate={classroomUpdate}
-        classrooms={classrooms}
-        selectedIndex={selectedIndex}
-      />
+        <TitleGeneric title="Cadastro de Aluno" />
 
-      <Fieldset legend="Alunos Cadastrados">
-        <ClassroomList
-          classrooms={classrooms}
-          onEdit={(index) => setSelectedIndex(index)}
+        <FormRegisterClassroom
+          onAdd={classroomAdd}
         />
-      </Fieldset>
+
+        <Fieldset legend="Alunos Cadastrados">
+          <ClassroomList
+            classrooms={classrooms}
+            onUpdate={classroomUpdate}
+          />
+        </Fieldset>
+      </div>
     </>
   )
 }
