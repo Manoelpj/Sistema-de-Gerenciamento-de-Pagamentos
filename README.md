@@ -22,6 +22,10 @@ A data e o horário da baixa de pagamento serão preenchidos automaticamente.
 - Guardar informações complementares (nome do pai/aluno, escola, etc.).
 - Registrar método de pagamento utilizado.
 - Registro automático da data e hora da baixa.
+- Registrar todas as ações no sistema
+- Informar rota de acordo com horario de cada aluno
+- Criar rota automatica, mas permitir alterações
+- Permitir criação de rotas
 
 ---
 
