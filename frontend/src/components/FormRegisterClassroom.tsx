@@ -1,62 +1,80 @@
 import { useState } from 'react'
-import { FloatLabel } from 'primereact/floatlabel';                           
-import { InputText } from 'primereact/inputtext';
-import { InputMask } from 'primereact/inputmask';
+import type { FormEvent } from 'react'
+import type { Classroom } from '../App'
 import { Button } from 'primereact/button'
 
-export default function FormRegisterClassroom({ onAdd }) {
-  const [nameClassroom, setNameClassroom] = useState('');
-  const [ageClassroom, setAgeClassroom] = useState('');
-  const [guardianClassroom, setGuardianClassroom] = useState('');
-  const [phone, setPhone] = useState('');
+interface Props {
+  onAdd: (classroom: Classroom) => void
+}
 
-  function handleSubmit(e) {
-    e.preventDefault();
+export default function FormRegisterClassroom({ onAdd }: Props) {
+  const [form, setForm] = useState<Classroom>({
+    name: '',
+    age: 0,
+    guardian: '',
+    phone: '',
+    active: true,
+  })
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = e.target
+    setForm({
+      ...form,
+      [name]: type === 'checkbox' ? checked : value,
+    })
+  }
 
-    const newClassroom = {
-      name: nameClassroom,
-      age: ageClassroom,
-      guardian: guardianClassroom,
-      phone: phone
-    };
-
-    // Chama a função para adicionar aluno
-    onAdd(newClassroom);
-
-    setNameClassroom('');
-    setAgeClassroom('');
-    setGuardianClassroom('');
-    setPhone('');
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!form.name || !form.guardian || !form.age) return
+    onAdd({ ...form, age: Number(form.age) })
+    setForm({ name: '', age: 0, guardian: '', phone: '', active: true })
   }
 
   return (
-    <form onSubmit={handleSubmit} className='
-      flex flex-col gap-[2em] justify-center justify-items-center
-      items-center
-      w-[500px] h-[500px]
-    '>
-      <FloatLabel>
-        <InputText id="name" value={nameClassroom} onChange={(e) => setNameClassroom(e.target.value)} />
-        <label htmlFor="name">Classroom name</label>
-      </FloatLabel>
-
-      <FloatLabel>
-        <InputText id="age" value={ageClassroom} onChange={(e) => setAgeClassroom(e.target.value)} keyfilter="pint" />
-        <label htmlFor="age">Classroom age</label>
-      </FloatLabel>
-
-      <FloatLabel>
-        <InputMask id="phone" mask="(99)99999-9999" value={phone} onChange={(e) => setPhone(e.target.value)}></InputMask>
-        <label htmlFor="phone">Phone</label>
-      </FloatLabel>
-
-      <FloatLabel>
-        <InputText id="guardian" value={guardianClassroom} onChange={(e) => setGuardianClassroom(e.target.value)} />
-        <label htmlFor="guardian">Guardian name</label>
-      </FloatLabel>
-
-      <Button label="Submit" type="submit" />
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-8">
+      <input
+        type="text"
+        name="name"
+        placeholder="Nome"
+        value={form.name}
+        onChange={handleChange}
+        className="border border-gray-300 rounded p-2"
+      />
+      <input
+        type="number"
+        name="age"
+        placeholder="Idade"
+        value={form.age || ''}
+        onChange={handleChange}
+        className="border border-gray-300 rounded p-2"
+      />
+      <input
+        type="text"
+        name="guardian"
+        placeholder="Responsável"
+        value={form.guardian}
+        onChange={handleChange}
+        className="border border-gray-300 rounded p-2"
+      />
+      <input
+        type="text"
+        name="phone"
+        placeholder="Telefone"
+        value={form.phone || ''}
+        onChange={handleChange}
+        className="border border-gray-300 rounded p-2"
+      />
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          name="active"
+          checked={form.active}
+          onChange={handleChange}
+        />
+        Aluno ativo
+      </label>
+      <Button type="submit" label="Adicionar" className="w-fit" />
     </form>
-  );
+  )
 }
