@@ -10,13 +10,14 @@ interface LinkNavegacaoProps{
 export default function LinkNavegacao({texto, url, svg}:LinkNavegacaoProps){
     const navigate = useNavigate();
     return(
-        <div className="flex flex-row items-center gap-[10px]" onClick={navigate(url)}>
-            {svg}
-            <span className="text-[16px] text-[#4D8170]">{texto}</span>
-        </div>
+            <div className="flex items-center
+            w-[245px] h-[50px] 
+            rounded-[5px] bg-transparent hover:bg-[#E6E6E6]
+            transition-all duration-200 cursor-pointer">
+                <div className="flex flex-row items-center gap-[8px] ml-[10px]">
+                    {svg}
+                    <span className="text-[16px] text-[#4D8170]">{texto}</span>
+                </div>
+            </div>
     );
 }
-
-// falta adicionar o react router no projeto e na main.tsx pra fazer funcionar o useNavigate
-// ver se o mouse trocar pra mãozinha, se não trocar usar o cursor-pointer
-// adicionar o hover, mas antes deve criar os elementos transparents pra poder usar o hover neles.
